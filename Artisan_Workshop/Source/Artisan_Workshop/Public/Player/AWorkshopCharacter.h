@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -31,6 +32,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> InteractAction;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,5 +45,21 @@ public:
 	// Handle 2D Movement Input
 	UFUNCTION()
 	void Move(const FInputActionValue& Value);
+
+	// Handle Look Input
+	UFUNCTION()
+	void Look(const FInputActionValue& Value);
+
+	// First-person camera
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
+
+	// Offset for the camera position
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	FVector FirstPersonCameraOffset = FVector(2.8f, 5.9f, 0.0f);
+
+	// Handle interaction input
+	UFUNCTION()
+	void Interact(const FInputActionValue& Value);
 
 };
