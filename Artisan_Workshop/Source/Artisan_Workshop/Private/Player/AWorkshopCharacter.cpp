@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Interaction/Interactable.h"
 #include "InputActionValue.h"
 
 // Sets default values
@@ -98,12 +99,13 @@ void AAWorkshopCharacter::Interact(const FInputActionValue& Value)
 
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionParams))
 	{
-		// Do something with the hit result, e.g., interact with the hit object
-
-		// For demonstration, we'll just print the name of the hit actor
-		if (GEngine)
+		if (AActor* HitActor = HitResult.GetActor())
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName()));
+			IInteractable* Interactactable = Cast<IInteractable>(HitActor);
+			if (Interactactable)
+			{
+				Interactactable->Interact();
+			}
 		}
 	}
 }
