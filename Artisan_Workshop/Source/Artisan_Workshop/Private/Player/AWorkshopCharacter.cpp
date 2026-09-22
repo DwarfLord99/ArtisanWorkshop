@@ -88,5 +88,23 @@ void AAWorkshopCharacter::Interact(const FInputActionValue& Value)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Interact action triggered."));
 	}
+
+	FHitResult HitResult;
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector End = Start + (FirstPersonCameraComponent->GetForwardVector() * InteractionDistance);
+
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionParams))
+	{
+		// Do something with the hit result, e.g., interact with the hit object
+
+		// For demonstration, we'll just print the name of the hit actor
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName()));
+		}
+	}
 }
 

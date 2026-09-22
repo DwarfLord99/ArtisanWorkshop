@@ -53,6 +53,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector FirstPersonCameraOffset = FVector(2.8f, 5.9f, 0.0f);
 
+	// Interaction distance for the interact action
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+	float InteractionDistance = 200.0f;
+
 	// Handle interaction input
 	void Interact(const FInputActionValue& Value);
 
