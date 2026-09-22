@@ -3,12 +3,22 @@
 
 #include "Player/AWorkshopCharacter.h"
 
+#include "Components/CapsuleComponent.h"
+#include "Camera/CameraComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
+
 // Sets default values
 AAWorkshopCharacter::AAWorkshopCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	// Create a CameraComponent
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+	FirstPersonCameraComponent->SetRelativeLocation(FirstPersonCameraOffset); // Position the camera
 }
 
 // Called when the game starts or when spawned
@@ -30,13 +40,6 @@ void AAWorkshopCharacter::BeginPlay()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("We are using Workshop Character."));
 }
 
-// Called every frame
-void AAWorkshopCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 // Called to bind functionality to input
 void AAWorkshopCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -53,7 +56,7 @@ void AAWorkshopCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 void AAWorkshopCharacter::Move(const FInputActionValue& Value)
 {
 	// Input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	const FVector2D MovementVector = Value.Get<FVector2D>();
 	if (Controller != nullptr)
 	{
 		// add movement 
@@ -62,31 +65,18 @@ void AAWorkshopCharacter::Move(const FInputActionValue& Value)
 
 		const FVector Forward = GetActorForwardVector();
 		AddMovementInput(Forward, MovementVector.Y);
-
-		// Add debug message to the screen
-		if (GEngine)
-		{
-			FString DebugMessage = FString::Printf(TEXT("Movement Input: X=%f, Y=%f"), MovementVector.X, MovementVector.Y);
-			GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Green, DebugMessage);
-		}
 	}
 }
 
 void AAWorkshopCharacter::Look(const FInputActionValue& Value)
 {
 	// Input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 	if (Controller != nullptr)
 	{
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
-		// Add debug message to the screen
-		if (GEngine)
-		{
-			FString DebugMessage = FString::Printf(TEXT("Look Input: X=%f, Y=%f"), LookAxisVector.X, LookAxisVector.Y);
-			GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Blue, DebugMessage);
-		}
 	}
 }
 

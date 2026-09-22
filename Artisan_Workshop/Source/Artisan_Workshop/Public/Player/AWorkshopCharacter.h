@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
-#include "InputActionValue.h"
 #include "AWorkshopCharacter.generated.h"
+
+class UCameraComponent;
+class UInputAction;
+class UInputMappingContext;
+struct FInputActionValue;
 
 UCLASS()
 class ARTISAN_WORKSHOP_API AAWorkshopCharacter : public ACharacter
@@ -35,31 +36,24 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> InteractAction;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
 
+public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Handle 2D Movement Input
-	UFUNCTION()
 	void Move(const FInputActionValue& Value);
 
 	// Handle Look Input
-	UFUNCTION()
 	void Look(const FInputActionValue& Value);
-
-	// First-person camera
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
 
 	// Offset for the camera position
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector FirstPersonCameraOffset = FVector(2.8f, 5.9f, 0.0f);
 
 	// Handle interaction input
-	UFUNCTION()
 	void Interact(const FInputActionValue& Value);
 
 };
