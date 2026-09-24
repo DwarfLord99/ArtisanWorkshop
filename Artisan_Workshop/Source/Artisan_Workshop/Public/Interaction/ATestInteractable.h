@@ -23,5 +23,5 @@ protected:
 public:
 
 	// Implement the Interact function from the IInteractable interface
-	virtual void Interact() override;
+	virtual void Interact(AActor* Interactor) override;
 };

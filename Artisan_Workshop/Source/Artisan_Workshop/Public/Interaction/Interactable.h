@@ -23,5 +23,5 @@ class ARTISAN_WORKSHOP_API IInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual void Interact() = 0;
+	virtual void Interact(AActor* Interactor) = 0;
 };

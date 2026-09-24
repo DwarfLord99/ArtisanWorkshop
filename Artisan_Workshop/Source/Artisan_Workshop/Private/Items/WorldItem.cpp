@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Items/WorldItem.h"
 
 // Sets default values
@@ -29,17 +28,22 @@ void AWorldItem::BeginPlay()
 	}
 }
 
-// Called every frame
-void AWorldItem::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void AWorldItem::Interact()
+void AWorldItem::Interact(AActor* Interactor)
 {
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Interacted with: ") + ItemName.ToString());
 	}
+
+	AAWorkshopCharacter* Player = Cast<AAWorkshopCharacter>(Interactor);
+	if (Player && Player->GetInventoryComponent())
+	{
+		Player->GetInventoryComponent()->AddItem(ItemDefinition);
+
+		UE_LOG(LogTemp, Log, TEXT("Added %s to inventory."), *ItemName.ToString());
+
+		// Destroy the item in the world after adding it to the inventory
+		Destroy();
+	}
+
 }

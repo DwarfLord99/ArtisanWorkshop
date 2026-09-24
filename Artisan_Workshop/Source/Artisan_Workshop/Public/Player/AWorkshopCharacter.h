@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Inventory/InventoryComponent.h"
 #include "AWorkshopCharacter.generated.h"
 
 class UCameraComponent;
@@ -39,6 +40,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
+
 public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -60,4 +64,6 @@ public:
 	// Handle interaction input
 	void Interact(const FInputActionValue& Value);
 
+	// Get the InventoryComponent
+	UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
 };

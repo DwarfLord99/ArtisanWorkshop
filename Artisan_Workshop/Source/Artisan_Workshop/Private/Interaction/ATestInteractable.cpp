@@ -19,7 +19,7 @@ void AATestInteractable::BeginPlay()
 }
 
 // Implement the Interact function from the IInteractable interface
-void AATestInteractable::Interact()
+void AATestInteractable::Interact(AActor* Interactor)
 {
 	if (GEngine)
 	{

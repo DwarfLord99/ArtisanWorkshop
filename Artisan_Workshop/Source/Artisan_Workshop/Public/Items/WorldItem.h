@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Core/ItemDefinition.h"
 #include "Interaction/Interactable.h"
+#include "Inventory/InventoryComponent.h"
+#include "Player/AWorkshopCharacter.h"
 #include "WorldItem.generated.h"
 
 UCLASS()
@@ -36,10 +38,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
 	int32 ItemValue;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
+
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-	virtual void Interact() override;
+	virtual void Interact(AActor* Interactor) override;
 };

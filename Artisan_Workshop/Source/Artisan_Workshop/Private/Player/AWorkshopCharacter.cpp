@@ -20,6 +20,9 @@ AAWorkshopCharacter::AAWorkshopCharacter()
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->SetRelativeLocation(FirstPersonCameraOffset); // Position the camera
+
+	// Create an InventoryComponent
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -104,7 +107,7 @@ void AAWorkshopCharacter::Interact(const FInputActionValue& Value)
 			IInteractable* Interactactable = Cast<IInteractable>(HitActor);
 			if (Interactactable)
 			{
-				Interactactable->Interact();
+				Interactactable->Interact(this);
 			}
 		}
 	}
