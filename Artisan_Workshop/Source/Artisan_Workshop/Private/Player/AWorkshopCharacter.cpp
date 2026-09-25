@@ -20,6 +20,7 @@ AAWorkshopCharacter::AAWorkshopCharacter()
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->SetRelativeLocation(FirstPersonCameraOffset); // Position the camera
+	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Create an InventoryComponent
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -76,6 +77,7 @@ void AAWorkshopCharacter::Look(const FInputActionValue& Value)
 {
 	// Input is a Vector2D
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+
 	if (Controller != nullptr)
 	{
 		// add yaw and pitch input to controller

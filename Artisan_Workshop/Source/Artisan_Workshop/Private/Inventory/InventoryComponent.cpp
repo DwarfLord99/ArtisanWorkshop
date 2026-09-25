@@ -80,3 +80,17 @@ void UInventoryComponent::RemoveItem(UItemDefinition* ItemDefinition)
 		}
 	}
 }
+
+void UInventoryComponent::HasItem(UItemDefinition* ItemDefinition, int32 Quantity, bool& bHasItem) const
+{
+	bHasItem = false;
+	if (!ItemDefinition) return;
+	for (const FInventorySlot& Slot : InventorySlots)
+	{
+		if (Slot.ItemDefinition == ItemDefinition && Slot.Quantity >= Quantity)
+		{
+			bHasItem = true;
+			return;
+		}
+	}
+}
