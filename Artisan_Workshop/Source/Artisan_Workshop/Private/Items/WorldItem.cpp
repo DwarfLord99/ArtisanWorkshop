@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "Items/WorldItem.h"
+#include "Player/AWorkshopCharacter.h"
 
 // Sets default values
 AWorldItem::AWorldItem()

@@ -32,13 +32,10 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+public:	
 	// Inventory slots
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FInventorySlot> InventorySlots;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AddItem(UItemDefinition* ItemDefinition);
 	void RemoveItem(UItemDefinition* ItemDefinition);

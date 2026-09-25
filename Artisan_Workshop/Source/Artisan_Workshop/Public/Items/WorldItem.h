@@ -7,7 +7,6 @@
 #include "Core/ItemDefinition.h"
 #include "Interaction/Interactable.h"
 #include "Inventory/InventoryComponent.h"
-#include "Player/AWorkshopCharacter.h"
 #include "WorldItem.generated.h"
 
 UCLASS()

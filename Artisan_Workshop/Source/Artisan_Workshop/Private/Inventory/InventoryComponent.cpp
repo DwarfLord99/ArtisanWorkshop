@@ -32,15 +32,6 @@ void UInventoryComponent::BeginPlay()
 	}
 }
 
-
-// Called every frame
-void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
 void UInventoryComponent::AddItem(UItemDefinition* ItemDefinition)
 {
 	if (!ItemDefinition) return;
@@ -67,5 +58,25 @@ void UInventoryComponent::AddItem(UItemDefinition* ItemDefinition)
 	for (const FInventorySlot& Slot : InventorySlots)
 	{
 		UE_LOG(LogTemp, Log, TEXT(" - %s: %d"), *Slot.ItemDefinition->GetName(), Slot.Quantity);
+	}
+}
+
+void UInventoryComponent::RemoveItem(UItemDefinition* ItemDefinition)
+{
+	if (!ItemDefinition) return;
+
+	for (int32 i = 0; i < InventorySlots.Num(); ++i)
+	{
+		if (InventorySlots[i].ItemDefinition == ItemDefinition)
+		{
+			// Decrease the quantity
+			InventorySlots[i].Quantity--;
+			// If quantity reaches zero, remove the slot
+			if (InventorySlots[i].Quantity <= 0)
+			{
+				InventorySlots.RemoveAt(i);
+			}
+			return;
+		}
 	}
 }
