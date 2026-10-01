@@ -37,11 +37,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> TestUIAction;
+
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
 	TObjectPtr<UInventoryComponent> InventoryComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> BaseWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TObjectPtr<UUserWidget> ActiveWidget;
 
 public:
 	// Called to bind functionality to input
@@ -66,4 +75,7 @@ public:
 
 	// Get the InventoryComponent
 	UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+
+	// Handle Test UI input
+	void ToggleUI(const FInputActionValue& Value);
 };

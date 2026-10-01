@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Interaction/Interactable.h"
 #include "InputActionValue.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 AAWorkshopCharacter::AAWorkshopCharacter()
@@ -54,6 +55,7 @@ void AAWorkshopCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAWorkshopCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAWorkshopCharacter::Look);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AAWorkshopCharacter::Interact);
+		EnhancedInputComponent->BindAction(TestUIAction, ETriggerEvent::Started, this, &AAWorkshopCharacter::ToggleUI);
 	}
 
 }
@@ -112,6 +114,27 @@ void AAWorkshopCharacter::Interact(const FInputActionValue& Value)
 				Interactactable->Interact(this);
 			}
 		}
+	}
+}
+
+void AAWorkshopCharacter::ToggleUI(const FInputActionValue& Value)
+{
+	// Create and add the widget to the viewport if it doesn't exist
+	if (ActiveWidget == nullptr && BaseWidgetClass != nullptr)
+	{
+		ActiveWidget = CreateWidget<UUserWidget>(GetWorld(), BaseWidgetClass);
+		if (ActiveWidget)
+		{
+			ActiveWidget->AddToViewport();
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Created and Added to Viewport."));
+		}
+	}
+	else if (ActiveWidget != nullptr)
+	{
+		// Remove the widget from the viewport if it exists
+		ActiveWidget->RemoveFromParent();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Removed from Viewport."));
+		ActiveWidget = nullptr;
 	}
 }
 
