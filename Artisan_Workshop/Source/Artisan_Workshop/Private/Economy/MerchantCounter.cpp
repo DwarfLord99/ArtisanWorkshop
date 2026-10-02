@@ -89,3 +89,7 @@ void AMerchantCounter::SellItem(FInventorySlot& ItemSlot)
 	}
 }
 
+FText AMerchantCounter::GetInteractionPrompt_Implementation() const
+{
+	return FText::FromString("Use Merchant Counter");
+}

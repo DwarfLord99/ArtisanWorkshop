@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Inventory/InventoryComponent.h"
+#include "UI/InteractionPromptWidget.h"
 #include "AWorkshopCharacter.generated.h"
 
 class UCameraComponent;
@@ -24,6 +25,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputMappingContext> FirstPersonContext;
@@ -50,7 +54,13 @@ protected:
 	TSubclassOf<UUserWidget> BaseWidgetClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UInteractionPromptWidget> InteractionPromptWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TObjectPtr<UUserWidget> ActiveWidget;
+
+	UPROPERTY()
+	TObjectPtr<UInteractionPromptWidget> InteractionPromptWidget;
 
 public:
 	// Called to bind functionality to input
@@ -78,4 +88,6 @@ public:
 
 	// Handle Test UI input
 	void ToggleUI(const FInputActionValue& Value);
+
+	void CheckForInteractable();
 };

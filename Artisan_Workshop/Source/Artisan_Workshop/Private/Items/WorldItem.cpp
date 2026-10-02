@@ -49,3 +49,8 @@ void AWorldItem::Interact(AActor* Interactor)
 	}
 
 }
+
+FText AWorldItem::GetInteractionPrompt_Implementation() const
+{
+	return FText::FromString("Pick up " + ItemName.ToString());
+}

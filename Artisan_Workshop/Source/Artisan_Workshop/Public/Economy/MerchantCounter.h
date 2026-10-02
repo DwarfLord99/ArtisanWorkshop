@@ -31,4 +31,5 @@ public:
 
 	void SellItem(FInventorySlot& ItemSlot);
 
+	FText GetInteractionPrompt_Implementation() const override;
 };

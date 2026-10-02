@@ -69,3 +69,9 @@ void ASmelter::Interact(AActor* Interactor)
 		UE_LOG(LogTemp, Warning, TEXT("No active recipe set in the CraftingComponent."));
 	}
 }
+
+// Set the interaction prompt text for the smelter
+FText ASmelter::GetInteractionPrompt_Implementation() const
+{
+	return FText::FromString(TEXT("Use Smelter"));
+}

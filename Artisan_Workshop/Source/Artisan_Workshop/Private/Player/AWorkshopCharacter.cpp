@@ -15,7 +15,7 @@
 AAWorkshopCharacter::AAWorkshopCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	// Create a CameraComponent
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -42,8 +42,29 @@ void AAWorkshopCharacter::BeginPlay()
 			Subsystem->AddMappingContext(FirstPersonContext, 0);
 		}
 	}
+
+	InteractionPromptWidget = CreateWidget<UInteractionPromptWidget>(GetWorld(), InteractionPromptWidgetClass);
+
+	if (InteractionPromptWidget)
+	{
+		InteractionPromptWidget->AddToViewport();
+		InteractionPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InteractionPromptWidget is not valid."));
+	}
 	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("We are using Workshop Character."));
+}
+
+// Called every frame
+void AAWorkshopCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Check for interactable objects in front of the player
+	CheckForInteractable();
 }
 
 // Called to bind functionality to input
@@ -138,3 +159,46 @@ void AAWorkshopCharacter::ToggleUI(const FInputActionValue& Value)
 	}
 }
 
+void AAWorkshopCharacter::CheckForInteractable()
+{
+	FHitResult HitResult;
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector End = Start + (FirstPersonCameraComponent->GetForwardVector() * InteractionDistance);
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionParams))
+	{
+		if (AActor* HitActor = HitResult.GetActor())
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				0.f,
+				FColor::Green,
+				HitActor->GetName());
+
+			if (HitActor)
+			{
+				FText InteractionPrompt = IInteractable::Execute_GetInteractionPrompt(HitActor);
+				if (InteractionPromptWidget)
+				{
+					InteractionPromptWidget->SetInteractionPrompt(InteractionPrompt);
+					InteractionPromptWidget->SetVisibility(ESlateVisibility::Visible);
+				}
+			}
+			else
+			{
+				if (InteractionPromptWidget)
+				{
+					InteractionPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (InteractionPromptWidget)
+		{
+			InteractionPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}

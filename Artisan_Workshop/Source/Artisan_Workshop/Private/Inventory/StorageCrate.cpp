@@ -89,3 +89,8 @@ void AStorageCrate::Interact(AActor* Interactor)
 		}
 	}
 }
+
+FText AStorageCrate::GetInteractionPrompt_Implementation() const
+{
+	return FText::FromString("Open Storage Crate");
+}

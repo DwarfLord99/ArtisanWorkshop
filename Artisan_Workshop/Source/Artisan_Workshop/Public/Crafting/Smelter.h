@@ -33,4 +33,6 @@ protected:
 public:	
 
 	void Interact(AActor* Interactor) override;
+
+	FText GetInteractionPrompt_Implementation() const override;
 };

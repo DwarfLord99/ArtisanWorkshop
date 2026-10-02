@@ -24,4 +24,7 @@ class ARTISAN_WORKSHOP_API IInteractable
 public:
 
 	virtual void Interact(AActor* Interactor) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
+	FText GetInteractionPrompt() const;
 };
