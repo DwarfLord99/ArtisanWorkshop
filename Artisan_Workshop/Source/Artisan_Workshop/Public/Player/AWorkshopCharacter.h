@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Inventory/InventoryComponent.h"
 #include "UI/InteractionPromptWidget.h"
+#include "UI/InventoryWidget.h"
 #include "AWorkshopCharacter.generated.h"
 
 class UCameraComponent;
@@ -51,10 +52,13 @@ protected:
 	TObjectPtr<UInventoryComponent> InventoryComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	TSubclassOf<UUserWidget> BaseWidgetClass;
+	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UInteractionPromptWidget> InteractionPromptWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TObjectPtr<UInventoryWidget> InventoryWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TObjectPtr<UUserWidget> ActiveWidget;
@@ -86,8 +90,8 @@ public:
 	// Get the InventoryComponent
 	UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
 
-	// Handle Test UI input
-	void ToggleUI(const FInputActionValue& Value);
+	// Handle Inventory UI
+	void ToggleInventoryUI(const FInputActionValue& Value);
 
 	void CheckForInteractable();
 };

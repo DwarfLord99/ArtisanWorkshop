@@ -76,7 +76,7 @@ void AAWorkshopCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAWorkshopCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AAWorkshopCharacter::Look);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AAWorkshopCharacter::Interact);
-		EnhancedInputComponent->BindAction(TestUIAction, ETriggerEvent::Started, this, &AAWorkshopCharacter::ToggleUI);
+		EnhancedInputComponent->BindAction(TestUIAction, ETriggerEvent::Started, this, &AAWorkshopCharacter::ToggleInventoryUI);
 	}
 
 }
@@ -138,24 +138,27 @@ void AAWorkshopCharacter::Interact(const FInputActionValue& Value)
 	}
 }
 
-void AAWorkshopCharacter::ToggleUI(const FInputActionValue& Value)
+void AAWorkshopCharacter::ToggleInventoryUI(const FInputActionValue& Value)
 {
-	// Create and add the widget to the viewport if it doesn't exist
-	if (ActiveWidget == nullptr && BaseWidgetClass != nullptr)
+	// Create and add the inventory widget to the viewport if it doesn't exist
+	if (InventoryWidget == nullptr && InventoryWidgetClass != nullptr)
 	{
-		ActiveWidget = CreateWidget<UUserWidget>(GetWorld(), BaseWidgetClass);
-		if (ActiveWidget)
+		InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(), InventoryWidgetClass);
+		if (InventoryWidget)
 		{
-			ActiveWidget->AddToViewport();
+			InventoryWidget->AddToViewport();
+			InventoryWidget->PopulateInventoryGrid(); // Call the function to populate the inventory grid
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Created and Added to Viewport."));
+			ActiveWidget = InventoryWidget; // Set the active widget to the inventory widget
 		}
 	}
-	else if (ActiveWidget != nullptr)
+	else if (InventoryWidget != nullptr)
 	{
 		// Remove the widget from the viewport if it exists
-		ActiveWidget->RemoveFromParent();
+		InventoryWidget->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Removed from Viewport."));
-		ActiveWidget = nullptr;
+		InventoryWidget = nullptr;
+		ActiveWidget = nullptr; // Clear the active widget
 	}
 }
 
