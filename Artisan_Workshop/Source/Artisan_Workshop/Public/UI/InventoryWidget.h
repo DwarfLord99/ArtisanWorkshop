@@ -17,7 +17,7 @@ class ARTISAN_WORKSHOP_API UInventoryWidget : public UBaseWidget
 
 private:
 	UPROPERTY(meta = (BindWidget))
-	class UUniformGridPanel* InventoryGrid;
+	class UWrapBox* InventoryGrid;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UInventorySlotWidget> InventorySlotWidgetClass;

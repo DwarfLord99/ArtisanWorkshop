@@ -3,7 +3,7 @@
 
 #include "UI/InventoryWidget.h"
 
-#include "Components/UniformGridPanel.h"
+#include "Components/WrapBox.h"
 
 void UInventoryWidget::PopulateInventoryGrid()
 {
@@ -18,7 +18,6 @@ void UInventoryWidget::PopulateInventoryGrid()
 
 	// Populate the grid with inventory slots
 	const int32 NumberofSlots = 20;
-	const int32 Columns = 5; // Number of columns in the grid
 
 	for (int32 Index = 0; Index < NumberofSlots; ++Index)
 	{
@@ -30,10 +29,8 @@ void UInventoryWidget::PopulateInventoryGrid()
 		UInventorySlotWidget* NewSlot = CreateWidget<UInventorySlotWidget>(this, InventorySlotWidgetClass);
 		if (NewSlot)
 		{
-			int32 Row = Index / Columns;
-			int32 Column = Index % Columns;
-			InventoryGrid->AddChildToUniformGrid(NewSlot, Row, Column);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Added slot %d at Row: %d, Column: %d"), Index, Row, Column));
+			InventoryGrid->AddChildToWrapBox(NewSlot);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Added Inventory Slot %d to Grid."), Index));
 		}
 	}
 }
