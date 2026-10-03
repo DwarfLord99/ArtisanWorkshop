@@ -4,6 +4,8 @@
 #include "UI/InventoryWidget.h"
 
 #include "Components/WrapBox.h"
+#include "Inventory/InventoryComponent.h"
+#include "Player/AWorkshopCharacter.h"
 
 void UInventoryWidget::PopulateInventoryGrid()
 {
@@ -31,6 +33,40 @@ void UInventoryWidget::PopulateInventoryGrid()
 		{
 			InventoryGrid->AddChildToWrapBox(NewSlot);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Added Inventory Slot %d to Grid."), Index));
+			InventorySlots.Add(NewSlot);
+		}
+	}
+}
+
+void UInventoryWidget::RefreshInventoryGrid()
+{
+	// Get the InventoryComponent from the owning actor
+	AAWorkshopCharacter* PlayerCharacter = Cast<AAWorkshopCharacter>(GetOwningPlayerPawn());
+	if (!PlayerCharacter)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter is not valid."));
+		return;
+	}
+
+	if (PlayerCharacter->GetInventoryComponent())
+	{
+		for (int32 Index = 0; Index < InventorySlots.Num(); ++Index)
+		{
+			if (InventorySlots[Index])
+			{
+				if (PlayerCharacter->GetInventoryComponent()->InventorySlots.IsValidIndex(Index))
+				{
+					const FInventorySlot& SlotData = PlayerCharacter->GetInventoryComponent()->InventorySlots[Index];
+					FString ItemName = SlotData.ItemDefinition ? SlotData.ItemDefinition->GetName() : TEXT("Empty");
+					int32 ItemQuantity = SlotData.Quantity;
+					InventorySlots[Index]->SetItemData(ItemName, ItemQuantity);
+				}
+				else
+				{
+					// If the inventory slot is not valid, set it to empty
+					InventorySlots[Index]->SetItemData(TEXT("Empty"), 0);
+				}
+			}
 		}
 	}
 }

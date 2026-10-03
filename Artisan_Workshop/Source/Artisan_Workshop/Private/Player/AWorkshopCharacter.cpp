@@ -150,6 +150,7 @@ void AAWorkshopCharacter::ToggleInventoryUI(const FInputActionValue& Value)
 			InventoryWidget->PopulateInventoryGrid(); // Call the function to populate the inventory grid
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Created and Added to Viewport."));
 			ActiveWidget = InventoryWidget; // Set the active widget to the inventory widget
+			InventoryWidget->RefreshInventoryGrid(); // Refresh the inventory grid to show current items
 		}
 	}
 	else if (InventoryWidget != nullptr)

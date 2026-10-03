@@ -22,6 +22,12 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UInventorySlotWidget> InventorySlotWidgetClass;
 
+	// Inventory Slot Array
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
+	TArray<TObjectPtr<UInventorySlotWidget>> InventorySlots;
+
 public:
 	void PopulateInventoryGrid();
+
+	void RefreshInventoryGrid();
 };
