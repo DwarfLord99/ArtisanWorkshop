@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "UI/BaseWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
+#include "Core/ItemDefinition.h"
 #include "InventorySlotWidget.generated.h"
 
 /**
@@ -16,15 +18,14 @@ class ARTISAN_WORKSHOP_API UInventorySlotWidget : public UBaseWidget
 	GENERATED_BODY()
 	
 protected:
-	void NativeConstruct() override;
-
-	// Widget references for displaying item name and quantity
+	// Widget references for displaying item icon and quantity
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> ItemNameText;
+	TObjectPtr<UImage> ItemIconImage;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ItemQuantityText;
 
 public:
-	void SetItemData(const FText& Name, int32 Quantity);
+	void SetItemData(UItemDefinition* ItemDefinition, int32 Quantity);
+	void ClearSlot();
 };

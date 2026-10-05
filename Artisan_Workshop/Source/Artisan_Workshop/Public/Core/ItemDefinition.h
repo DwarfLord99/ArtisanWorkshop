@@ -38,4 +38,14 @@ public:
 	// Item Mesh
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
 	TObjectPtr<UStaticMesh> ItemMesh;
+
+	// Item Icon
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	TObjectPtr<UTexture2D> ItemIcon;
+
+	// Icon Getter
+	TObjectPtr<UTexture2D> GetItemIcon() const
+	{
+		return ItemIcon;
+	}
 };

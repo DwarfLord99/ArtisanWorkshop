@@ -57,14 +57,12 @@ void UInventoryWidget::RefreshInventoryGrid()
 				if (PlayerCharacter->GetInventoryComponent()->InventorySlots.IsValidIndex(Index))
 				{
 					const FInventorySlot& SlotData = PlayerCharacter->GetInventoryComponent()->InventorySlots[Index];
-					FText ItemName = SlotData.ItemDefinition->ItemName;
-					int32 ItemQuantity = SlotData.Quantity;
-					InventorySlots[Index]->SetItemData(ItemName, ItemQuantity);
+					InventorySlots[Index]->SetItemData(SlotData.ItemDefinition, SlotData.Quantity);
 				}
 				else
 				{
 					// If the inventory slot is not valid, set it to empty
-					InventorySlots[Index]->SetItemData(FText::FromString("Empty"), 0);
+					InventorySlots[Index]->ClearSlot();
 				}
 			}
 		}

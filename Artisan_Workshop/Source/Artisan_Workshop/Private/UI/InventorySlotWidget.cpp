@@ -5,61 +5,44 @@
 
 #include "Components/TextBlock.h"
 
-void UInventorySlotWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-	// Additional initialization if needed
-
-	// Debugging: Log the widget construction
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("InventorySlotWidget constructed."));
-	}
-
-	UE_LOG(LogTemp, Warning,
-		TEXT("Constructed Slot: %p"), this);
-
-	// Ensure that the widget references are valid
-	if (!ItemNameText)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ItemNameText is not valid."));
-	}
-	else
-	{
-		// Debugging: Log the initial text of the ItemNameText
-		FString InitialText = ItemNameText->GetText().ToString();
-		UE_LOG(LogTemp, Log, TEXT("Initial ItemNameText: %s"), *InitialText);
-	}
-
-	if (!ItemQuantityText)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ItemQuantityText is not valid."));
-	}
-	else
-	{
-		// Debugging: Log the initial text of the ItemQuantityText
-		FString InitialText = ItemQuantityText->GetText().ToString();
-		UE_LOG(LogTemp, Log, TEXT("Initial ItemQuantityText: %s"), *InitialText);
-	}
-}
-
-void UInventorySlotWidget::SetItemData(const FText& Name, int32 Quantity)
+void UInventorySlotWidget::SetItemData(UItemDefinition* ItemDefinition, int32 Quantity)
 {
 	UE_LOG(LogTemp, Warning,
 		TEXT("Slot Widget: %p"), this);
 
-	if (ItemNameText)
+	if (ItemIconImage)
 	{
-		ItemNameText->SetText(Name);
+		ItemIconImage->SetVisibility(ESlateVisibility::Visible);
+		ItemIconImage->SetBrushFromTexture(ItemDefinition->GetItemIcon());
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ItemNameText is not valid."));
+		UE_LOG(LogTemp, Warning, TEXT("ItemIconImage is not valid."));
 	}
 
-	if (ItemQuantityText)
+	if (ItemQuantityText && Quantity > 1)
 	{
 		ItemQuantityText->SetText(FText::FromString(FString::FromInt(Quantity)));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ItemQuantityText is not valid."));
+	}
+}
+
+void UInventorySlotWidget::ClearSlot()
+{
+	if (ItemIconImage)
+	{
+		ItemIconImage->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ItemIconImage is not valid."));
+	}
+	if (ItemQuantityText)
+	{
+		ItemQuantityText->SetText(FText::GetEmpty());
 	}
 	else
 	{
