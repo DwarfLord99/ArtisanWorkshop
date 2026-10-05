@@ -43,14 +43,14 @@ void UInventorySlotWidget::NativeConstruct()
 	}
 }
 
-void UInventorySlotWidget::SetItemData(const FString& Name, int32 Quantity)
+void UInventorySlotWidget::SetItemData(const FText& Name, int32 Quantity)
 {
 	UE_LOG(LogTemp, Warning,
 		TEXT("Slot Widget: %p"), this);
 
 	if (ItemNameText)
 	{
-		ItemNameText->SetText(FText::FromString(Name));
+		ItemNameText->SetText(Name);
 	}
 	else
 	{

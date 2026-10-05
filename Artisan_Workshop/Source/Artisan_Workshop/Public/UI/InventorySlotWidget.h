@@ -26,5 +26,5 @@ protected:
 	TObjectPtr<UTextBlock> ItemQuantityText;
 
 public:
-	void SetItemData(const FString& Name, int32 Quantity);
+	void SetItemData(const FText& Name, int32 Quantity);
 };

@@ -182,18 +182,21 @@ void AAWorkshopCharacter::CheckForInteractable()
 
 			if (HitActor)
 			{
-				FText InteractionPrompt = IInteractable::Execute_GetInteractionPrompt(HitActor);
-				if (InteractionPromptWidget)
+				if (HitActor->Implements<UInteractable>())
 				{
-					InteractionPromptWidget->SetInteractionPrompt(InteractionPrompt);
-					InteractionPromptWidget->SetVisibility(ESlateVisibility::Visible);
+					FText InteractionPrompt = IInteractable::Execute_GetInteractionPrompt(HitActor);
+					if (InteractionPromptWidget)
+					{
+						InteractionPromptWidget->SetInteractionPrompt(InteractionPrompt);
+						InteractionPromptWidget->SetVisibility(ESlateVisibility::Visible);
+					}
 				}
-			}
-			else
-			{
-				if (InteractionPromptWidget)
+				else
 				{
-					InteractionPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+					if (InteractionPromptWidget)
+					{
+						InteractionPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+					}
 				}
 			}
 		}
