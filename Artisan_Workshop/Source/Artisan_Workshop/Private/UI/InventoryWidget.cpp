@@ -19,7 +19,7 @@ void UInventoryWidget::PopulateInventoryGrid()
 	InventoryGrid->ClearChildren();
 
 	// Populate the grid with inventory slots
-	const int32 NumberofSlots = 20;
+	const int32 NumberofSlots = 28;
 
 	for (int32 Index = 0; Index < NumberofSlots; ++Index)
 	{
