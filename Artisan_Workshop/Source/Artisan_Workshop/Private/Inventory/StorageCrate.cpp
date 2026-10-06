@@ -15,7 +15,7 @@ AStorageCrate::AStorageCrate()
 	RootComponent = CrateMeshComponent;
 
 	// Create the InventoryComponent
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+	StorageInventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 
 }
 
@@ -26,7 +26,7 @@ void AStorageCrate::BeginPlay()
 
 	// Print out the current inventory for debugging
 	UE_LOG(LogTemp, Log, TEXT("Storage Crate Inventory:"));
-	for (const FInventorySlot& Slot : InventoryComponent->InventorySlots)
+	for (const FInventorySlot& Slot : StorageInventoryComponent->InventorySlots)
 	{
 		if (Slot.ItemDefinition)
 		{
@@ -55,7 +55,7 @@ void AStorageCrate::Interact(AActor* Interactor)
 			if (PlayerSlot.ItemDefinition && PlayerSlot.Quantity >= 0)
 			{
 				// Add the item to the crate's inventory
-				InventoryComponent->AddItem(PlayerSlot.ItemDefinition);
+				StorageInventoryComponent->AddItem(PlayerSlot.ItemDefinition);
 				// Remove the item from the player's inventory
 				Player->GetInventoryComponent()->RemoveItem(PlayerSlot.ItemDefinition);
 				UE_LOG(LogTemp, Log, TEXT("Moved item from player to Storage Crate."));
@@ -70,7 +70,7 @@ void AStorageCrate::Interact(AActor* Interactor)
 					}
 				}
 				UE_LOG(LogTemp, Log, TEXT("Storage Crate Inventory:"));
-				for (const FInventorySlot& Slot : InventoryComponent->InventorySlots)
+				for (const FInventorySlot& Slot : StorageInventoryComponent->InventorySlots)
 				{
 					if (Slot.ItemDefinition)
 					{

@@ -146,18 +146,16 @@ void AAWorkshopCharacter::ToggleInventoryUI(const FInputActionValue& Value)
 		InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(), InventoryWidgetClass);
 		if (InventoryWidget)
 		{
-			InventoryWidget->AddToViewport();
 			InventoryWidget->PopulateInventoryGrid(); // Call the function to populate the inventory grid
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Created and Added to Viewport."));
+			InventoryWidget->SetInventorySource(GetInventoryComponent());
+			InventoryWidget->AddToViewport();
 			ActiveWidget = InventoryWidget; // Set the active widget to the inventory widget
-			InventoryWidget->RefreshInventoryGrid(); // Refresh the inventory grid to show current items
 		}
 	}
-	else if (InventoryWidget != nullptr)
+	else if (InventoryWidget)
 	{
 		// Remove the widget from the viewport if it exists
 		InventoryWidget->RemoveFromParent();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("UI Widget Removed from Viewport."));
 		InventoryWidget = nullptr;
 		ActiveWidget = nullptr; // Clear the active widget
 	}

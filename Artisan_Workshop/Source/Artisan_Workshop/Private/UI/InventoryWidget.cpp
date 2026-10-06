@@ -17,6 +17,7 @@ void UInventoryWidget::PopulateInventoryGrid()
 
 	// Clear existing children in the grid
 	InventoryGrid->ClearChildren();
+	InventorySlots.Empty();
 
 	// Populate the grid with inventory slots
 	const int32 NumberofSlots = 28;
@@ -40,31 +41,43 @@ void UInventoryWidget::PopulateInventoryGrid()
 
 void UInventoryWidget::RefreshInventoryGrid()
 {
-	// Get the InventoryComponent from the owning actor
-	AAWorkshopCharacter* PlayerCharacter = Cast<AAWorkshopCharacter>(GetOwningPlayerPawn());
-	if (!PlayerCharacter)
+	if (!InventorySource)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerCharacter is not valid."));
+		UE_LOG(LogTemp, Warning, TEXT("InventorySource is not valid."));
 		return;
 	}
 
-	if (PlayerCharacter->GetInventoryComponent())
+	if (InventorySource)
 	{
 		for (int32 Index = 0; Index < InventorySlots.Num(); ++Index)
 		{
-			if (InventorySlots[Index])
+			if (!InventorySlots[Index])
 			{
-				if (PlayerCharacter->GetInventoryComponent()->InventorySlots.IsValidIndex(Index))
-				{
-					const FInventorySlot& SlotData = PlayerCharacter->GetInventoryComponent()->InventorySlots[Index];
-					InventorySlots[Index]->SetItemData(SlotData.ItemDefinition, SlotData.Quantity);
-				}
-				else
-				{
-					// If the inventory slot is not valid, set it to empty
-					InventorySlots[Index]->ClearSlot();
-				}
+				continue;
+			}
+
+			if (InventorySource->InventorySlots.IsValidIndex(Index))
+			{
+				const FInventorySlot& SlotData = InventorySource->InventorySlots[Index];
+				InventorySlots[Index]->SetItemData(SlotData.ItemDefinition, SlotData.Quantity);
+			}
+			else
+			{
+				InventorySlots[Index]->ClearSlot();
 			}
 		}
+	}
+}
+
+void UInventoryWidget::SetInventorySource(UInventoryComponent* NewInventorySource)
+{
+	if (NewInventorySource)
+	{
+		InventorySource = NewInventorySource;
+		RefreshInventoryGrid();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NewInventorySource is not valid."));
 	}
 }

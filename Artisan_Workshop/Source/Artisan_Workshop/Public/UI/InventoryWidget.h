@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI/BaseWidget.h"
 #include "UI/InventorySlotWidget.h"
+#include "Inventory/InventoryComponent.h"
 #include "InventoryWidget.generated.h"
 
 /**
@@ -26,8 +27,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 	TArray<TObjectPtr<UInventorySlotWidget>> InventorySlots;
 
-public:
-	void PopulateInventoryGrid();
+	UPROPERTY()
+	TObjectPtr<UInventoryComponent> InventorySource;
 
+public:
+	void SetInventorySource(UInventoryComponent* NewInventorySource);
+	void PopulateInventoryGrid();
 	void RefreshInventoryGrid();
 };

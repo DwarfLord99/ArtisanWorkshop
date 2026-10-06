@@ -24,7 +24,7 @@ protected:
 	UStaticMeshComponent* CrateMeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Storage")
-	TObjectPtr<UInventoryComponent> InventoryComponent;
+	TObjectPtr<UInventoryComponent> StorageInventoryComponent;
 
 public:	
 	virtual void Interact(AActor* Interactor) override;
