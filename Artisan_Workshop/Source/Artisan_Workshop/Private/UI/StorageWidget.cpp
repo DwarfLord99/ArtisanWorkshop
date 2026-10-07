@@ -3,6 +3,17 @@
 
 #include "UI/StorageWidget.h"
 #include "UI/InventoryWidget.h"
+#include "Components/Button.h"
+
+void UStorageWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if (CloseButton)
+	{
+		CloseButton->OnClicked.AddDynamic(this, &UStorageWidget::CloseStorageWidget);
+	}
+}
 
 void UStorageWidget::SetInventorySources(UInventoryComponent* PlayerInventorySource, UInventoryComponent* StorageInventorySource)
 {
@@ -18,5 +29,18 @@ void UStorageWidget::SetInventorySources(UInventoryComponent* PlayerInventorySou
 		PlayerInventoryPanel->PopulateInventoryGrid();
 		PlayerInventoryPanel->SetInventoryTitle(FText::FromString("Inventory")); // Set the player inventory title
 		PlayerInventoryPanel->SetInventorySource(PlayerInventorySource);
+	}
+}
+
+void UStorageWidget::CloseStorageWidget()
+{
+	RemoveFromParent();
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (PlayerController)
+	{
+		PlayerController->bShowMouseCursor = false;
+		FInputModeGameOnly InputMode;
+		PlayerController->SetInputMode(InputMode);
 	}
 }

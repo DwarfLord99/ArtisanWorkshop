@@ -46,6 +46,16 @@ void AStorageCrate::Interact(AActor* Interactor)
 		{
 			StorageWidget->AddToViewport();
 			StorageWidget->SetInventorySources(WorkshopCharacter->GetInventoryComponent(), StorageInventoryComponent);
+
+			APlayerController* PlayerController = Cast<APlayerController>(WorkshopCharacter->GetController());
+			if (PlayerController)
+			{
+				PlayerController->bShowMouseCursor = true;
+				FInputModeUIOnly InputMode;
+				InputMode.SetWidgetToFocus(StorageWidget->TakeWidget());
+				InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+				PlayerController->SetInputMode(InputMode);
+			}
 		}
 	}
 }
