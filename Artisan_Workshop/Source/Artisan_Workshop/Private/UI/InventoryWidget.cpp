@@ -27,6 +27,7 @@ void UInventoryWidget::PopulateInventoryGrid()
 		UInventorySlotWidget* NewSlot = CreateWidget<UInventorySlotWidget>(this, InventorySlotWidgetClass);
 		if (NewSlot)
 		{
+			NewSlot->SetSlotIndex(Index);
 			InventoryGrid->AddChildToWrapBox(NewSlot);
 			InventorySlots.Add(NewSlot);
 		}

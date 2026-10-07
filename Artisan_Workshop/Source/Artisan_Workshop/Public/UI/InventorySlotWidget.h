@@ -25,7 +25,12 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> ItemQuantityText;
 
+	int32 SlotIndex = INDEX_NONE;
+
+	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
 public:
 	void SetItemData(UItemDefinition* ItemDefinition, int32 Quantity);
 	void ClearSlot();
+	void SetSlotIndex(int32 NewIndex) { SlotIndex = NewIndex; }
 };

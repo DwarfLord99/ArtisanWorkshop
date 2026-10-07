@@ -2,8 +2,13 @@
 
 
 #include "UI/InventorySlotWidget.h"
-
 #include "Components/TextBlock.h"
+
+FReply UInventorySlotWidget::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Double-clicked on Inventory Slot %d"), SlotIndex));
+	return FReply::Handled();
+}
 
 void UInventorySlotWidget::SetItemData(UItemDefinition* ItemDefinition, int32 Quantity)
 {
