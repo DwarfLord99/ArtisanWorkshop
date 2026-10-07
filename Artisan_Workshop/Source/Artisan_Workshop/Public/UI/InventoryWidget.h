@@ -19,7 +19,10 @@ class ARTISAN_WORKSHOP_API UInventoryWidget : public UBaseWidget
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UWrapBox* InventoryGrid;
-	
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* InventoryTitle;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UInventorySlotWidget> InventorySlotWidgetClass;
 
@@ -32,6 +35,7 @@ private:
 
 public:
 	void SetInventorySource(UInventoryComponent* NewInventorySource);
+	void SetInventoryTitle(const FText& NewTitle);
 	void PopulateInventoryGrid();
 	void RefreshInventoryGrid();
 };

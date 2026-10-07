@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Inventory/InventoryComponent.h"
+#include "UI/StorageWidget.h"
 #include "StorageCrate.generated.h"
 
 UCLASS()
@@ -25,6 +26,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Storage")
 	TObjectPtr<UInventoryComponent> StorageInventoryComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Storage")
+	TObjectPtr<UStorageWidget> StorageWidget;
 
 public:	
 	virtual void Interact(AActor* Interactor) override;

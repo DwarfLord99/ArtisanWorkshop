@@ -148,6 +148,7 @@ void AAWorkshopCharacter::ToggleInventoryUI(const FInputActionValue& Value)
 		{
 			InventoryWidget->PopulateInventoryGrid(); // Call the function to populate the inventory grid
 			InventoryWidget->SetInventorySource(GetInventoryComponent());
+			InventoryWidget->SetInventoryTitle(FText::FromString("Inventory")); // Set the inventory title
 			InventoryWidget->AddToViewport();
 			ActiveWidget = InventoryWidget; // Set the active widget to the inventory widget
 		}

@@ -39,53 +39,13 @@ void AStorageCrate::BeginPlay()
 // Implement the Interact function from IInteractable
 void AStorageCrate::Interact(AActor* Interactor)
 {
-	if (GEngine)
+	// Open the storage UI for the player interacting with the crate
+	if (AAWorkshopCharacter* WorkshopCharacter = Cast<AAWorkshopCharacter>(Interactor))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Interacted with Storage Crate."));
-	}
-
-	AAWorkshopCharacter* Player = Cast<AAWorkshopCharacter>(Interactor);
-	if (Player && Player->GetInventoryComponent())
-	{
-		// Remove item from player inventory and add to crate inventory
-		// For demonstration, let's assume we are removing the first item in the player's inventory
-		if (Player->GetInventoryComponent()->InventorySlots.Num() > 0)
+		if (StorageWidget)
 		{
-			FInventorySlot& PlayerSlot = Player->GetInventoryComponent()->InventorySlots[0];
-			if (PlayerSlot.ItemDefinition && PlayerSlot.Quantity >= 0)
-			{
-				// Add the item to the crate's inventory
-				StorageInventoryComponent->AddItem(PlayerSlot.ItemDefinition);
-				// Remove the item from the player's inventory
-				Player->GetInventoryComponent()->RemoveItem(PlayerSlot.ItemDefinition);
-				UE_LOG(LogTemp, Log, TEXT("Moved item from player to Storage Crate."));
-
-				// Print out the current inventory for debugging for both player and crate
-				UE_LOG(LogTemp, Log, TEXT("Player Inventory:"));
-				for (const FInventorySlot& Slot : Player->GetInventoryComponent()->InventorySlots)
-				{
-					if (Slot.ItemDefinition)
-					{
-						UE_LOG(LogTemp, Log, TEXT(" - %s: %d"), *Slot.ItemDefinition->GetName(), Slot.Quantity);
-					}
-				}
-				UE_LOG(LogTemp, Log, TEXT("Storage Crate Inventory:"));
-				for (const FInventorySlot& Slot : StorageInventoryComponent->InventorySlots)
-				{
-					if (Slot.ItemDefinition)
-					{
-						UE_LOG(LogTemp, Log, TEXT(" - %s: %d"), *Slot.ItemDefinition->GetName(), Slot.Quantity);
-					}
-				}
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Player has no items to move to Storage Crate."));
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Player's inventory is empty."));
+			StorageWidget->AddToViewport();
+			StorageWidget->SetInventorySources(WorkshopCharacter->GetInventoryComponent(), StorageInventoryComponent);
 		}
 	}
 }

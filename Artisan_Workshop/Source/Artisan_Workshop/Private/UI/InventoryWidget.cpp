@@ -24,16 +24,10 @@ void UInventoryWidget::PopulateInventoryGrid()
 
 	for (int32 Index = 0; Index < NumberofSlots; ++Index)
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Populating Inventory Grid."));
-		}
-
 		UInventorySlotWidget* NewSlot = CreateWidget<UInventorySlotWidget>(this, InventorySlotWidgetClass);
 		if (NewSlot)
 		{
 			InventoryGrid->AddChildToWrapBox(NewSlot);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Added Inventory Slot %d to Grid."), Index));
 			InventorySlots.Add(NewSlot);
 		}
 	}
@@ -79,5 +73,17 @@ void UInventoryWidget::SetInventorySource(UInventoryComponent* NewInventorySourc
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NewInventorySource is not valid."));
+	}
+}
+
+void UInventoryWidget::SetInventoryTitle(const FText& NewTitle)
+{
+	if (InventoryTitle)
+	{
+		InventoryTitle->SetText(NewTitle);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryTitle is not valid."));
 	}
 }
