@@ -40,4 +40,6 @@ public:
 	void AddItem(UItemDefinition* ItemDefinition);
 	void RemoveItem(UItemDefinition* ItemDefinition);
 	void HasItem(UItemDefinition* ItemDefinition, int32 Quantity, bool& bHasItem) const;
+	bool AddItemTo(const FInventorySlot& SlotData, int32 Quantity);
+	bool RemoveItemFrom(const FInventorySlot& SlotData, int32 Quantity);
 };

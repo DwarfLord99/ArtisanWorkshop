@@ -29,6 +29,7 @@ void UInventoryWidget::PopulateInventoryGrid()
 		{
 			NewSlot->SetSlotIndex(Index);
 			InventoryGrid->AddChildToWrapBox(NewSlot);
+			NewSlot->OnInventorySlotDoubleClicked.AddUniqueDynamic(this, &UInventoryWidget::OnInventorySlotDoubleClicked);
 			InventorySlots.Add(NewSlot);
 		}
 	}
@@ -86,5 +87,31 @@ void UInventoryWidget::SetInventoryTitle(const FText& NewTitle)
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("InventoryTitle is not valid."));
+	}
+}
+
+void UInventoryWidget::OnInventorySlotDoubleClicked(int32 SlotIndex)
+{
+	if (!InventorySource)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventorySource is not valid."));
+		return;
+	}
+	if (InventorySource->InventorySlots.IsValidIndex(SlotIndex))
+	{
+		const FInventorySlot& SlotData = InventorySource->InventorySlots[SlotIndex];
+		if (SlotData.ItemDefinition)
+		{
+			// Handle the double-clicked item here
+			OnInventoryItemDoubleClicked.Broadcast(InventorySource, SlotIndex);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("Double-clicked on an empty slot."));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid slot index: %d"), SlotIndex);
 	}
 }

@@ -8,6 +8,8 @@
 #include "Inventory/InventoryComponent.h"
 #include "InventoryWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryItemDoubleClicked, UInventoryComponent*, InventorySource, int32, SlotIndex);
+
 /**
  * 
  */
@@ -38,4 +40,13 @@ public:
 	void SetInventoryTitle(const FText& NewTitle);
 	void PopulateInventoryGrid();
 	void RefreshInventoryGrid();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnInventoryItemDoubleClicked OnInventoryItemDoubleClicked;
+
+	// Getter for InventorySource
+	UInventoryComponent* GetInventorySource() const { return InventorySource; }
+
+	UFUNCTION()
+	void OnInventorySlotDoubleClicked(int32 SlotIndex);
 };

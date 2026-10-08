@@ -94,3 +94,48 @@ void UInventoryComponent::HasItem(UItemDefinition* ItemDefinition, int32 Quantit
 		}
 	}
 }
+
+bool UInventoryComponent::AddItemTo(const FInventorySlot& SlotData, int32 Quantity)
+{
+	if (!SlotData.ItemDefinition || Quantity <= 0) return false;
+
+	// Check if the item already exists in the inventory
+	for (FInventorySlot& Slot : InventorySlots)
+	{
+		if (Slot.ItemDefinition == SlotData.ItemDefinition)
+		{
+			Slot.Quantity += Quantity;
+			return true;
+		}
+	}
+
+	// If the item doesn't exist in the inventory, add a new slot
+	FInventorySlot NewSlot;
+	NewSlot.ItemDefinition = SlotData.ItemDefinition;
+	NewSlot.Quantity = Quantity;
+	InventorySlots.Add(NewSlot);
+
+	return true;
+}
+
+bool UInventoryComponent::RemoveItemFrom(const FInventorySlot& SlotData, int32 Quantity)
+{
+	if (!SlotData.ItemDefinition || Quantity <= 0) return false;
+
+	for (int32 i = 0; i < InventorySlots.Num(); ++i)
+	{
+		if (InventorySlots[i].ItemDefinition == SlotData.ItemDefinition)
+		{
+			InventorySlots[i].Quantity -= Quantity;
+
+			if (InventorySlots[i].Quantity <= 0)
+			{
+				InventorySlots.RemoveAt(i);
+			}
+
+			return true;
+		}
+	}
+
+	return false;
+}

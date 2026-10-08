@@ -52,7 +52,6 @@ void AStorageCrate::Interact(AActor* Interactor)
 			{
 				PlayerController->bShowMouseCursor = true;
 				FInputModeUIOnly InputMode;
-				InputMode.SetWidgetToFocus(StorageWidget->TakeWidget());
 				InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 				PlayerController->SetInputMode(InputMode);
 			}

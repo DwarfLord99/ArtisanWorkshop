@@ -7,14 +7,12 @@
 FReply UInventorySlotWidget::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Double-clicked on Inventory Slot %d"), SlotIndex));
+	OnInventorySlotDoubleClicked.Broadcast(SlotIndex);
 	return FReply::Handled();
 }
 
 void UInventorySlotWidget::SetItemData(UItemDefinition* ItemDefinition, int32 Quantity)
 {
-	UE_LOG(LogTemp, Warning,
-		TEXT("Slot Widget: %p"), this);
-
 	if (ItemIconImage)
 	{
 		ItemIconImage->SetVisibility(ESlateVisibility::Visible);
@@ -28,6 +26,10 @@ void UInventorySlotWidget::SetItemData(UItemDefinition* ItemDefinition, int32 Qu
 	if (ItemQuantityText && Quantity > 1)
 	{
 		ItemQuantityText->SetText(FText::FromString(FString::FromInt(Quantity)));
+	}
+	else if (ItemQuantityText && Quantity <= 1)
+	{
+		ItemQuantityText->SetText(FText::GetEmpty());
 	}
 	else
 	{

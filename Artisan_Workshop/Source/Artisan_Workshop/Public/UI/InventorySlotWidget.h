@@ -9,6 +9,8 @@
 #include "Core/ItemDefinition.h"
 #include "InventorySlotWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventorySlotDoubleClicked, int32, SlotIndex);
+
 /**
  * 
  */
@@ -33,4 +35,7 @@ public:
 	void SetItemData(UItemDefinition* ItemDefinition, int32 Quantity);
 	void ClearSlot();
 	void SetSlotIndex(int32 NewIndex) { SlotIndex = NewIndex; }
+
+	UPROPERTY(BlueprintAssignable)
+	FOnInventorySlotDoubleClicked OnInventorySlotDoubleClicked;
 };

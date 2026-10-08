@@ -8,6 +8,8 @@
 #include "UI/InventorySlotWidget.h"
 #include "StorageWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnStorageItemDoubleClicked, UInventoryComponent*, InventorySource, int32, SlotIndex);
+
 class UInventoryWidget;
 class UInventoryComponent;
 
@@ -36,4 +38,7 @@ public:
 
 	UFUNCTION()
 	void CloseStorageWidget();
+
+	UFUNCTION()
+	void HandleInventoryItemDoubleClicked(UInventoryComponent* SourceInventory, int32 SlotIndex);
 };
