@@ -36,37 +36,23 @@ void ASmelter::BeginPlay()
 // Implement the Interact function from the IInteractable interface
 void ASmelter::Interact(AActor* Interactor)
 {
-	// Add item from the player inventory to the smelter's inventory for testing
-	AAWorkshopCharacter* Player = Cast<AAWorkshopCharacter>(Interactor);
-	if (Player && Player->GetInventoryComponent()->InventorySlots.Num() > 0)
+	// Open the storage UI for the player interacting with the crate
+	if (AAWorkshopCharacter* WorkshopCharacter = Cast<AAWorkshopCharacter>(Interactor))
 	{
-		// Remove item from player inventory and add to smelter inventory
-		// For demonstration, let's assume we are removing the first item in the player's inventory
-		FInventorySlot& PlayerSlot = Player->GetInventoryComponent()->InventorySlots[0];
-		if (PlayerSlot.ItemDefinition && PlayerSlot.Quantity > 0)
+		if (SmelterWidget)
 		{
-			// Add the item to the smelter's inventory
-			InventoryComponent->AddItem(PlayerSlot.ItemDefinition);
-			// Remove the item from the player's inventory
-			Player->GetInventoryComponent()->RemoveItem(PlayerSlot.ItemDefinition);
-			UE_LOG(LogTemp, Log, TEXT("Moved item from player to smelter."));
-		}
-	}
+			SmelterWidget->AddToViewport();
+			SmelterWidget->SetInventorySource(WorkshopCharacter->GetInventoryComponent());
 
-	if (CraftingComponent && CraftingComponent->ActiveRecipe)
-	{
-		if (CraftingComponent->CanCraft())
-		{
-			CraftingComponent->ProcessRecipe();
+			APlayerController* PlayerController = Cast<APlayerController>(WorkshopCharacter->GetController());
+			if (PlayerController)
+			{
+				PlayerController->bShowMouseCursor = true;
+				FInputModeUIOnly InputMode;
+				InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+				PlayerController->SetInputMode(InputMode);
+			}
 		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Cannot craft the recipe: %s"), *CraftingComponent->ActiveRecipe->GetName());
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No active recipe set in the CraftingComponent."));
 	}
 }
 

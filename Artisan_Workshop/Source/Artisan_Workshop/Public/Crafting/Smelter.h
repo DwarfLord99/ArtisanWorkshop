@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Inventory/InventoryComponent.h"
 #include "Crafting/CraftingComponent.h"
+#include "UI/SmelterWidget.h"
 #include "Smelter.generated.h"
 
 UCLASS()
@@ -29,6 +30,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Smelter")
 	TObjectPtr<UCraftingComponent> CraftingComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Smelter")
+	TObjectPtr<USmelterWidget> SmelterWidget;
 
 public:	
 
