@@ -26,10 +26,7 @@ void AWorkbench::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (CraftingComponent)
-	{
-		CraftingComponent->InventoryComponent = InventoryComponent;
-	}
+	
 }
 
 // Implement the Interact function from the IInteractable interface

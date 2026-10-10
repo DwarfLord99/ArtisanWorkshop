@@ -25,58 +25,12 @@ void UCraftingComponent::BeginPlay()
 
 bool UCraftingComponent::CanCraft() const
 {
-	if (!ActiveRecipe || !InventoryComponent)
-	{
-		return false;
-	}
-
-	for (const TObjectPtr<UItemDefinition>& Ingredient : ActiveRecipe->RecipeIngredients)
-	{
-		bool bHasItem = false;
-
-		InventoryComponent->HasItem(Ingredient, 1, bHasItem);
-
-		if (!bHasItem)
-		{
-			return false;
-		}
-	}
-
-	return true;
+	// STUB for checking if the crafting component can craft the active recipe
+	return false;
 }
 
 bool UCraftingComponent::ProcessRecipe()
 {
-	if (!CanCraft())
-	{
-		return false;
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("Crafting recipe: %s"), *ActiveRecipe->GetName());
-
-	// Remove ingredients from inventory
-	for (const TObjectPtr<UItemDefinition>& Ingredient : ActiveRecipe->RecipeIngredients)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Removing ingredient: %s"), *Ingredient->GetName());
-		InventoryComponent->RemoveItem(Ingredient);
-	}
-
-	// Add the result item to inventory
-	if (ActiveRecipe->RecipeResult)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Adding result item: %s"), *ActiveRecipe->RecipeResult->GetName());
-		InventoryComponent->AddItem(ActiveRecipe->RecipeResult);
-
-		// Print out the current inventory for debugging
-		UE_LOG(LogTemp, Log, TEXT("Current Inventory:"));
-		for (const FInventorySlot& Slot : InventoryComponent->InventorySlots)
-		{
-			if (Slot.ItemDefinition)
-			{
-				UE_LOG(LogTemp, Log, TEXT(" - %s: %d"), *Slot.ItemDefinition->GetName(), Slot.Quantity);
-			}
-		}
-	}
-
-	return true;
+	// STUB for processing the active recipe
+	return false;
 }

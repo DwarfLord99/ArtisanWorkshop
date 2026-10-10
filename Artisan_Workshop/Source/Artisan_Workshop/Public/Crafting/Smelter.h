@@ -26,7 +26,10 @@ protected:
 	TObjectPtr<UStaticMeshComponent> SmelterMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Smelter")
-	TObjectPtr<UInventoryComponent> InventoryComponent;
+	TObjectPtr<UInventoryComponent> InputInventory;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Smelter")
+	TObjectPtr<UInventoryComponent> OutputInventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Smelter")
 	TObjectPtr<UCraftingComponent> CraftingComponent;
@@ -39,4 +42,6 @@ public:
 	void Interact(AActor* Interactor) override;
 
 	FText GetInteractionPrompt_Implementation() const override;
+
+	UCraftingComponent* GetCraftingComponent() const { return CraftingComponent; }
 };

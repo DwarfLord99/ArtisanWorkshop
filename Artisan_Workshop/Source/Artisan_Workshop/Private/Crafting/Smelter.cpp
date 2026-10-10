@@ -14,8 +14,11 @@ ASmelter::ASmelter()
 	SmelterMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SmelterMesh"));
 	RootComponent = SmelterMesh;
 
-	// Create the InventoryComponent
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+	// Create the InputInventory component
+	InputInventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("InputInventory"));
+
+	// Create the OutputInventory component
+	OutputInventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("OutputInventory"));
 
 	// Create the CraftingComponent
 	CraftingComponent = CreateDefaultSubobject<UCraftingComponent>(TEXT("CraftingComponent"));
@@ -29,7 +32,16 @@ void ASmelter::BeginPlay()
 	
 	if (CraftingComponent)
 	{
-		CraftingComponent->InventoryComponent = InventoryComponent;
+		CraftingComponent->InputInventory = InputInventory;
+		CraftingComponent->OutputInventory = OutputInventory;
+
+		UE_LOG(LogTemp, Warning,
+			TEXT("Smelter Input Inventory: %s"),
+			*GetNameSafe(InputInventory));
+
+		UE_LOG(LogTemp, Warning,
+			TEXT("Smelter Output Inventory: %s"),
+			*GetNameSafe(OutputInventory));
 	}
 }
 
@@ -43,6 +55,7 @@ void ASmelter::Interact(AActor* Interactor)
 		{
 			SmelterWidget->AddToViewport();
 			SmelterWidget->SetInventorySource(WorkshopCharacter->GetInventoryComponent());
+			SmelterWidget->SetCraftingComponent(CraftingComponent);
 
 			APlayerController* PlayerController = Cast<APlayerController>(WorkshopCharacter->GetController());
 			if (PlayerController)

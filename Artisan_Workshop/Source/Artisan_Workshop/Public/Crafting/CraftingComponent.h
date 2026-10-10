@@ -19,8 +19,11 @@ public:
 	UCraftingComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crafting")
-	TObjectPtr<UInventoryComponent> InventoryComponent;
+	TObjectPtr<UInventoryComponent> InputInventory;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crafting")
+	TObjectPtr<UInventoryComponent> OutputInventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crafting")
 	TObjectPtr<URecipeDefinition> ActiveRecipe;
@@ -34,6 +37,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-
+	UInventoryComponent* GetInputInventory() const { return InputInventory; }
+	UInventoryComponent* GetOutputInventory() const { return OutputInventory; }
 		
 };

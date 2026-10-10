@@ -6,7 +6,9 @@
 #include "UI/BaseWidget.h"
 #include "SmelterWidget.generated.h"
 
-class UItemDefinition;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSmelterItemDoubleClicked, UInventoryComponent*, InventorySource, int32, SlotIndex);
+
+class UCraftingComponent;
 class UInventoryWidget;
 class UInventorySlotWidget;
 class UInventoryComponent;
@@ -46,14 +48,23 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* CurrentRecipe;
 
+	UPROPERTY()
+	TObjectPtr<UCraftingComponent> CraftingComponent;
+
 public:
 	void SetInventorySource(UInventoryComponent* PlayerInventorySource);
-	void SetSmelterInputSlot(UItemDefinition* ItemDefinition, int32 Quantity);
-	void SetSmelterOutputSlot(UItemDefinition* ItemDefinition, int32 Quantity);
+	void SetCraftingComponent(UCraftingComponent* CraftingComponent);
+	void ResetSmelterDisplay();
 	void UpdateSmeltProgress(float Progress);
 	void SetSmelterTitle(const FText& NewTitle);
 	void SetCurrentRecipe(const FText& RecipeText);
 
 	UFUNCTION()
 	void CloseSmelterWidget();
+
+	UFUNCTION()
+	void HandleSmelterItemDoubleClicked(UInventoryComponent* SourceInventory, int32 SlotIndex);
+
+	UFUNCTION()
+	void HandleSmelterOutputSlotDoubleClicked();
 };
