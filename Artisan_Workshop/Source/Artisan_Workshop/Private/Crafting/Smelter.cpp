@@ -57,6 +57,7 @@ void ASmelter::Interact(AActor* Interactor)
 			SmelterWidget->SetInventorySource(WorkshopCharacter->GetInventoryComponent());
 			SmelterWidget->SetCraftingComponent(CraftingComponent);
 			SmelterWidget->RefreshSmelterDisplay();
+			SmelterWidget->SetCurrentRecipe();
 
 			APlayerController* PlayerController = Cast<APlayerController>(WorkshopCharacter->GetController());
 			if (PlayerController)

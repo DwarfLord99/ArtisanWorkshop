@@ -25,12 +25,75 @@ void UCraftingComponent::BeginPlay()
 
 bool UCraftingComponent::CanCraft() const
 {
-	// STUB for checking if the crafting component can craft the active recipe
-	return false;
+	if (!ActiveRecipe || !InputInventory)
+	{
+		return false;
+	}
+
+	// Check if the input inventory has enough items for the recipe
+	for (UItemDefinition* RequiredIngredient : ActiveRecipe->RecipeIngredients)
+	{
+		bool bFoundIngredient = false;
+
+		for (const FInventorySlot& Slot : InputInventory->InventorySlots)
+		{
+			if (Slot.ItemDefinition == RequiredIngredient)
+			{
+				bFoundIngredient = true;
+				break;
+			}
+		}
+
+		if (!bFoundIngredient)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool UCraftingComponent::ProcessRecipe()
 {
-	// STUB for processing the active recipe
-	return false;
+	if (bIsProcessing)
+	{
+		return false; // Already processing a recipe
+	}
+
+	if (!CanCraft())
+	{
+		return false;
+	}
+
+	bIsProcessing = true;
+
+	CurrentProgress = 0.0f;
+
+	return true;
+}
+
+void UCraftingComponent::CompleteRecipe()
+{
+	if (!CanCraft())
+	{
+		return;
+	}
+
+	// Remove the required ingredients from the input inventory
+	for (UItemDefinition* RequiredIngredient : ActiveRecipe->RecipeIngredients)
+	{
+		FInventorySlot TempSlot;
+
+		TempSlot.ItemDefinition = RequiredIngredient;
+
+		InputInventory->RemoveItemFrom(TempSlot, 1);
+
+		FInventorySlot OutputSlot;
+
+		OutputSlot.ItemDefinition = ActiveRecipe->RecipeResult;
+		OutputInventory->AddItemTo(OutputSlot, ActiveRecipe->RecipeResultQuantity);
+
+		bIsProcessing = false;
+		CurrentProgress = 0.0f;
+	}
 }

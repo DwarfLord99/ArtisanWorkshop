@@ -32,4 +32,8 @@ public:
 	// Recipe Result
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Recipe")
 	TObjectPtr<UItemDefinition> RecipeResult;
+
+	// Recipe Result Quantity
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Recipe")
+	int32 RecipeResultQuantity = 1;
 };

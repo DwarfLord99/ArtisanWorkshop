@@ -32,6 +32,14 @@ public:
 
 	bool ProcessRecipe();
 
+	void CompleteRecipe();
+
+	bool bIsProcessing = false;
+
+	float CurrentProgress = 0.0f;
+
+	float ProcessingTime = 5.0f;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -39,5 +47,5 @@ protected:
 public:	
 	UInventoryComponent* GetInputInventory() const { return InputInventory; }
 	UInventoryComponent* GetOutputInventory() const { return OutputInventory; }
-		
+
 };

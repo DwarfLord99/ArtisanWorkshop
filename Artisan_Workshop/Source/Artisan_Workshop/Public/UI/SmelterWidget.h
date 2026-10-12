@@ -57,7 +57,7 @@ public:
 	void RefreshSmelterDisplay();
 	void UpdateSmeltProgress(float Progress);
 	void SetSmelterTitle(const FText& NewTitle);
-	void SetCurrentRecipe(const FText& RecipeText);
+	void SetCurrentRecipe();
 
 	UFUNCTION()
 	void CloseSmelterWidget();

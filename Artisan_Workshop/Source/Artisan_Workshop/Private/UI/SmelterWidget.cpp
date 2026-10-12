@@ -41,9 +41,12 @@ void USmelterWidget::SetSmelterTitle(const FText& NewTitle)
 	// STUB for setting the smelter title
 }
 
-void USmelterWidget::SetCurrentRecipe(const FText& RecipeText)
+void USmelterWidget::SetCurrentRecipe()
 {
-	// STUB for setting the current recipe text
+	if (CraftingComponent)
+	{
+		CurrentRecipe->SetText(FText::FromString("Current Recipe: " + (CraftingComponent->ActiveRecipe ? CraftingComponent->ActiveRecipe->RecipeName.ToString() : "None")));
+	}
 }
 
 void USmelterWidget::RefreshSmelterDisplay()
@@ -59,6 +62,7 @@ void USmelterWidget::RefreshSmelterDisplay()
 		if (InputInventory && InputInventory->InventorySlots.Num() > 0)
 		{
 			const FInventorySlot& InputSlot = InputInventory->InventorySlots[0];
+			SmelterInputSlot->SetSlotIndex(0); // Set the slot index for the input slot
 			SmelterInputSlot->SetItemData(InputSlot.ItemDefinition, InputSlot.Quantity);
 		}
 		else
@@ -73,6 +77,7 @@ void USmelterWidget::RefreshSmelterDisplay()
 		if (OutputInventory && OutputInventory->InventorySlots.Num() > 0)
 		{
 			const FInventorySlot& OutputSlot = OutputInventory->InventorySlots[0];
+			SmelterOutputSlot->SetSlotIndex(0); // Set the slot index for the output slot
 			SmelterOutputSlot->SetItemData(OutputSlot.ItemDefinition, OutputSlot.Quantity);
 		}
 		else
@@ -142,6 +147,22 @@ void USmelterWidget::HandleSmelterItemDoubleClicked(UInventoryComponent* SourceI
 
 	PlayerInventoryPanel->RefreshInventoryGrid();
 	RefreshSmelterDisplay();
+
+	if (CraftingComponent && !CraftingComponent->bIsProcessing)
+	{
+		if (CraftingComponent->CanCraft())
+		{
+			CraftingComponent->ProcessRecipe();
+		}
+	}
+
+	if (CraftingComponent && CraftingComponent->bIsProcessing)
+	{
+		CraftingComponent->CompleteRecipe();
+		RefreshSmelterDisplay();
+		HandleSmelterOutputSlotDoubleClicked();
+		RefreshSmelterDisplay();
+	}
 }
 
 void USmelterWidget::HandleSmelterOutputSlotDoubleClicked()
