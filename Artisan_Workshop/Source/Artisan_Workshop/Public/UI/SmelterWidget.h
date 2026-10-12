@@ -54,7 +54,7 @@ private:
 public:
 	void SetInventorySource(UInventoryComponent* PlayerInventorySource);
 	void SetCraftingComponent(UCraftingComponent* CraftingComponent);
-	void ResetSmelterDisplay();
+	void RefreshSmelterDisplay();
 	void UpdateSmeltProgress(float Progress);
 	void SetSmelterTitle(const FText& NewTitle);
 	void SetCurrentRecipe(const FText& RecipeText);

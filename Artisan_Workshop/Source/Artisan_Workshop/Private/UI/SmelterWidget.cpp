@@ -46,7 +46,7 @@ void USmelterWidget::SetCurrentRecipe(const FText& RecipeText)
 	// STUB for setting the current recipe text
 }
 
-void USmelterWidget::ResetSmelterDisplay()
+void USmelterWidget::RefreshSmelterDisplay()
 {
 	if (!CraftingComponent) return;
 
@@ -54,12 +54,11 @@ void USmelterWidget::ResetSmelterDisplay()
 	UInventoryComponent* OutputInventory = CraftingComponent->GetOutputInventory();
 
 	// Reset the input slot display
-	if (InputInventory && InputInventory->InventorySlots.Num() > 0)
+	if (SmelterInputSlot)
 	{
-		const FInventorySlot& InputSlot = InputInventory->InventorySlots[0];
-
-		if (SmelterInputSlot)
+		if (InputInventory && InputInventory->InventorySlots.Num() > 0)
 		{
+			const FInventorySlot& InputSlot = InputInventory->InventorySlots[0];
 			SmelterInputSlot->SetItemData(InputSlot.ItemDefinition, InputSlot.Quantity);
 		}
 		else
@@ -69,11 +68,11 @@ void USmelterWidget::ResetSmelterDisplay()
 	}
 
 	// Reset the output slot display
-	if (OutputInventory && OutputInventory->InventorySlots.Num() > 0)
+	if (SmelterOutputSlot)
 	{
-		const FInventorySlot& OutputSlot = OutputInventory->InventorySlots[0];
-		if (SmelterOutputSlot)
+		if (OutputInventory && OutputInventory->InventorySlots.Num() > 0)
 		{
+			const FInventorySlot& OutputSlot = OutputInventory->InventorySlots[0];
 			SmelterOutputSlot->SetItemData(OutputSlot.ItemDefinition, OutputSlot.Quantity);
 		}
 		else
@@ -142,7 +141,7 @@ void USmelterWidget::HandleSmelterItemDoubleClicked(UInventoryComponent* SourceI
 	}
 
 	PlayerInventoryPanel->RefreshInventoryGrid();
-	ResetSmelterDisplay();
+	RefreshSmelterDisplay();
 }
 
 void USmelterWidget::HandleSmelterOutputSlotDoubleClicked()
